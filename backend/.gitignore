@@ -1,0 +1,12 @@
+<<<<<<< HEAD
+node_modules/
+.env
+dist/
+build/
+coverage/
+uploads/
+*.lnk
+=======
+node_modules/
+.env
+>>>>>>> 6e4730e (Remove Windows shortcut)
