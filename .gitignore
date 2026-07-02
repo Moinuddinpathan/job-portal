@@ -1,1 +1,45 @@
-.env 
+# Environment files
+.env
+**/.env
+**/.env.*
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build folders
+dist/
+build/
+coverage/
+**/dist/
+**/build/
+**/coverage/
+
+# Uploads
+backend/uploads/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# VS Code
+.vscode/
+!.vscode/extensions.json
+
+# IntelliJ
+.idea/
+
+# Operating System
+.DS_Store
+Thumbs.db
+
+# Windows shortcut files
+*.lnk
+
+# Temporary files
+*.tmp
+*.temp
