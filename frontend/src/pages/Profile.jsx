@@ -1,14 +1,38 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getProfile, logoutUser } from "../services/authService"
+import { useNavigate } from "react-router-dom";
+
 
 function Profile() {
 
-  const [resume, setResume] = useState();
-const user = {
-    name: "",
-    email: "",
-    phone: "",
-  };
+
+  const navigate = useNavigate();
+const [resume, setResume] = useState();
+const [user, setUser] = useState({
+  name:"",
+  email:"",
+  phone:"",
+})
   
+useEffect(()=>{
+  fetchProfile();
+}, [])
+
+const handleLogout = ()=>{
+  logoutUser();
+  alert("logged Out successfully");
+  navigate("/login");
+}
+const fetchProfile = async () => {
+  try{
+    const response = await getProfile();
+
+    setUser(response.data.user);
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
 
   const handleUpload = () => {
 
@@ -37,7 +61,7 @@ const user = {
                 <input
                   type="text"
                   className="form-control"
-                  value=""
+                  value={user.name}
                   readOnly
                 />
               </div>
@@ -50,7 +74,7 @@ const user = {
                 <input
                   type="email"
                   className="form-control"
-                  value=""
+                  value={user.email}
                   readOnly
                 />
               </div>
@@ -63,7 +87,7 @@ const user = {
                 <input
                   type="text"
                   className="form-control"
-                  value=""
+                  value={user.phone}
                   readOnly
                 />
               </div>
@@ -84,6 +108,10 @@ const user = {
 <button className="btn btn-success" onClick={handleUpload}>
     Upload Resume
 </button>
+
+<button className="btn btn-danger" onClick={handleLogout}>
+    Logout
+  </button>
                                 </div>
                     </div>
                 </div>
