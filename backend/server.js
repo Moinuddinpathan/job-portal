@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const jobRoutes = require("./routes/jobRoutes")
 
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
@@ -20,7 +21,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
+app.use("/api/jobs", jobRoutes)
 
 app.use("/api/users", userRoutes);
 
