@@ -1,59 +1,98 @@
-function MyApplications(){
+import { useEffect, useState } from "react";
+import { getMyApplications } from "../services/applicationService";
 
-    const applications = [
-        {
-      id: 1,
-      job: "React Developer",
-      company: "Google",
-      status: "Pending",
-    },
-    {
-      id: 2,
-      job: "MERN Stack Developer",
-      company: "Amazon",
-      status: "Selected",
-    },
+
+function MyApplications() {
+
+    const [applications, setApplications] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+
+    useEffect(()=>{
+        fetchApplications()
+    }, [])
   
-];
 
-    return(
+    const fetchApplications = async () => {
+        try {
+            const response = await getMyApplications();
 
-        <div className="container mt-5">
-            <h2 className="mb-4">My Application </h2>
+      setApplications(response.data.application);
+        } catch (error) {
+      console.log(error);
+      alert(error.response?.data?.message || "Failed to load applications");
+    } finally {
+      setLoading(false);
+    }
+    }
 
-            <table className="table table-bordered table-striped">
-                <thead className="tabel-dark">
+    if (loading) {
+    return (
+      <div className="container mt-5">
+        <h3 className="text-center">Loading Applications...</h3>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container mt-5">
+
+      <h2 className="mb-4">My Applications</h2>
+
+      <table className="table table-bordered table-striped">
+
+        <thead className="table-dark">
+
+          <tr>
+            <th>Job Title</th>
+            <th>Company</th>
+            <th>Status</th>
+            <th>Resume</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          {
+                applications.length > 0 ? (
+                    applications.map((app) => (
+                         <tr key={app._id}>
+
+                <td>{app.job?.title}</td>
+
+                <td>{app.job?.company}</td>
+
+                <td>
+                    <span className={
+                        app.status === "Pending"
+                        ? "badge bg-warning text-dark"
+                        : app.status === "Selected"
+                        ? "badge bg-success"
+                        : "badge bg-danger"
+                    }>
+                        {app.status}
+                    </span>
+                </td>
+                <td>{app.resume}</td>
+
+              </tr>
+                    ))
+                ) : (
                     <tr>
-                        <th>
-                            Job Title 
-                        </th>
+                        <td colSpan="3"  className="text-center">
+                            No Application Found
+                        </td>
                     </tr>
-                    <tr>
-                        <th>
-                            Company 
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>
-                            Status
-                        </th>
-                    </tr>
-                </thead>
+                )
+          }
 
+        </tbody>
 
-                <tbody>
-                    {applications.map((app)=>(
-                        <tr key={app.id}>
-                            <td>{app.job}</td>
-                            <td>{app.company}</td>
-                            <td>{app.status}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-    )
+      </table>
+
+    </div>
+  );
 }
-
 
 export default MyApplications;

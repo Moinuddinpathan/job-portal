@@ -7,6 +7,8 @@ const jobRoutes = require("./routes/jobRoutes")
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
+const applicationRoutes = require("./routes/applicationRoutes");
+
 
 dotenv.config();
 
@@ -22,6 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use("/api/jobs", jobRoutes)
+app.use("/api/applications", applicationRoutes)
 
 app.use("/api/users", userRoutes);
 
