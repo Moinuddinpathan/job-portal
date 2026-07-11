@@ -1,64 +1,62 @@
 import { useEffect, useState } from "react";
 import JobCard from "../components/JobCard"
-import API from "../api/axios";
+import { getJobs } from "../services/jobService";
 
 function Jobs(){
 
 
-    const [job, setJobs]= useState([])
+    const [jobs, setJobs]= useState([])
+    const [loading, setLoading] = useState(true);
+
 
     useEffect(()=>{
-        const fetchJobs = async () => {
-            try{
-                const res = await API.get("/jobs");
-                setJobs(res.data);
-            } catch (error) {
-                console.log(error);
-                
-            }
-        };
-
         fetchJobs();
     }, [])
 
-    const jobs=[
-        {
-            id: 1,
-            title: "Software Developer",
-            company: "Amazon",
-            location: "India",
-            salary: "3 LPA",
-        },
-        {
-            id: 2,
-            title: "Mern Stack Developer",
-            company: "Infosys",
-            location: "Pune",
-            salary: "6 LPA",
-        },
-        {
-            id: 3,
-            title: "Software Engineer",
-            company: "Flipkart",
-            location: "Banglore",
-            salary: "5 LPA",
-        },
-        
+    const fetchJobs = async () => {
+        try {
+            const response = await getJobs();
 
-    ]
+            setJobs(response.data.jobs)
+        } catch(error) {
+            console.log("Error fetching jobs:",error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
+    if(loading) {
+        return (
+            <div className="container mt-5">
+                <h3 className="text-center" >Loading Jobs...</h3>
+            </div>
+        );
+    }
+   
+
+
+
+    
 
     return(
        <div className="container mt-5">
-
-        <h2 className="text-center mb-4">Available Jobs</h2>
-
+        <h2 className="text-center mb-4">
+            Available Jobs
+        </h2>
         <div className="row">
             {
-                jobs.map((job)=>(
-                    <div className="col-md-4 mb-4" key={job.id}>
-                        <JobCard job={job}/>
+                jobs.length > 0 ? (
+                    jobs.map((job) => (
+                        <div className="col-md-4 mb-4" key={job._id} >
+                            <JobCard job={job} />
                         </div>
-                ))
+                    ))
+                ) : (
+                    <div className="text-center">
+            <h4>No Jobs Available</h4>
+          </div>
+                )
             }
         </div>
        </div>

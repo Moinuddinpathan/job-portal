@@ -5,7 +5,7 @@ function JobCard({job}) {
         <div className="card-shadow h-100">
             <div className="card-body">
                 <h4>{job.title}</h4>
-                <h6 className="text-primary">{job.company}</h6>
+                <h5 className="text-primary">{job.company}</h5>
                 <p>
                     <strong>Location:</strong>{job.location}
                 </p>
@@ -15,7 +15,7 @@ function JobCard({job}) {
                 </p>
 
                 <Link
-                to={`/jobs/${job.id}`}
+                to={`/jobs/${job._id}`}
                 className="btn btn-primary w-100">
                     View Details
                 </Link>

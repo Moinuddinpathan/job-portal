@@ -1,51 +1,75 @@
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getJobById } from "../services/jobService";
 
 function JobDetails() {
 
     const { id } = useParams();
+
+    const [job, setJob] = useState(null);
+
+    useEffect(()=>{
+        fetchJob();
+    }, [])
+
+    const fetchJob = async () => {
+        try {
+            const response = await getJobById(id);
+
+            setJob(response.data.job);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    if(!job){
+        return <h2 className="text-center mt-5">Loading...</h2>;
+    }
+
+
 
     return (
 
 
         <div className="container mt-5">
             <div className="card-shadow">
-                <div className="card-body">
+                <div className="card-header bg-primary text-white">
 
 
                     <h2>
-                        Software Developer
+                        {job.title}
                     </h2>
+                    <div className="card-body">
+                        <h4 className="text-success" >{job.company}</h4>
+                    </div>
+<hr/>
 
-                    <h5 className="text-primary">
-                        Amazon
-                    </h5>
+ <p>
+            <strong>Location :</strong> {job.location}
+          </p>
 
-                    <hr />
+          <p>
+            <strong>Salary :</strong> {job.salary}
+          </p>
 
-                    <p>
-                        <strong>Location :</strong> India
-                    </p>
+          <p>
+            <strong>Experience :</strong> {job.experience}
+          </p>
 
-                    <p>
-                        <strong>Salary :</strong> ₹3 LPA
-                    </p>
-                    <p>
-                        <strong>Experience :</strong> 1-2 Years
-                    </p>
-                    <p>
-                        <strong>Skills :</strong>
-                        React, JavaScript, HTML, CSS
-                    </p>
-                    <p>
-                        <strong>Description :</strong>
-                        We are looking for a Frontend Developer who has
-                        knowledge of React.js, JavaScript, HTML and CSS.
-                        The candidate should be able to build responsive
-                        web applications.
-                    </p>
+          <p>
+            <strong>Skills :</strong> {job.skills}
+          </p>
+
+          <p>
+            <strong>Description :</strong>
+          </p>
+
+          <p>{job.description}</p>
+
+
                     <Link
-                    to={`/apply/${JobDetails.id}`}
+                    to={`/apply/${job._id}`}
                     className="btn btn-success">Apply Now
     
                     </Link>
