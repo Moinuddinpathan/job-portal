@@ -8,7 +8,7 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
-
+const adminRoutes = require("./routes/adminRoutes");
 
 dotenv.config();
 
@@ -26,6 +26,7 @@ app.use(cookieParser());
 app.use("/api/jobs", jobRoutes)
 app.use("/api/applications", applicationRoutes)
 
+
 app.use("/api/users", userRoutes);
 
 app.use("/api/auth", authRoutes);
@@ -33,6 +34,8 @@ app.use("/api/auth", authRoutes);
 app.get("/", (req, res) => {
   res.send("Job Portal API Running...");
 });
+app.use("/api/admin", adminRoutes);
+
 
 // Start Server
 const PORT = process.env.PORT || 5000;

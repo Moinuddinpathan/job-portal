@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
+import logo from "../assets/logo.png";
+import registerBanner from "../assets/register-banner.png";
+import loginBanner from "../assets/login-banner.png";
 
 function Register() {
   const navigate = useNavigate();
