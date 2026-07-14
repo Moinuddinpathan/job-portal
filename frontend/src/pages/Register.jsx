@@ -1,12 +1,69 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
-import logo from "../assets/logo.png";
-import registerBanner from "../assets/register-banner.png";
-import loginBanner from "../assets/login-banner.png";
+import {
+  sendOTP,
+  verifyOTP,
+  registerUser,
+} from "../services/authService";
+
 
 function Register() {
   const navigate = useNavigate();
+  const [otp, setOtp] = useState("");
+
+const [otpSent, setOtpSent] = useState(false);
+
+const [otpVerified, setOtpVerified] = useState(false);
+
+const [loading, setLoading] = useState(false);
+
+
+    const handleSendOTP = async () => {
+      if (!formData.email) {
+        return alert("Enter Email");
+      }
+
+      try {
+        setLoading(true);
+
+        const res = await sendOTP(formData.email);
+
+        alert(res.data.message);
+
+        setOtpSent(true);
+
+      } catch (error) {
+  console.log(error);
+  alert(error.response?.data?.message || error.message || "Something went wrong");
+} finally {
+        setLoading(false);
+      }
+    }
+
+    const handleVerifyOTP = async () => {
+  if (!otp) {
+    return alert("Enter OTP");
+  }
+
+  try {
+    setLoading(true);
+
+    const res = await verifyOTP(formData.email, otp);
+
+    alert(res.data.message);
+
+    setOtpVerified(true);
+
+  } catch (error) {
+  console.log(error);
+  alert(error.response?.data?.message || error.message || "Something went wrong");
+} finally {
+
+    setLoading(false);
+
+  }
+};
 
   const [formData, setFormData] = useState({
     name: "",
@@ -26,6 +83,11 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!otpVerified) {
+  alert("Please verify your OTP first");
+  return;
+}
+
     // Validation
     if (
       !formData.name ||
@@ -44,12 +106,12 @@ function Register() {
     }
 
     try {
-      const res = await API.post("/users/register", {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        password: formData.password,
-      });
+      const res = await registerUser({
+  name: formData.name,
+  email: formData.email,
+  phone: formData.phone,
+  password: formData.password,
+});
 
       alert(res.data.message);
 
@@ -60,6 +122,10 @@ function Register() {
         password: "",
         confirmPassword: "",
       });
+
+      setOtp("");
+setOtpSent(false);
+setOtpVerified(false);
 
       navigate("/login");
     } catch (error) {
@@ -95,17 +161,51 @@ function Register() {
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label">Email</label>
+  <label className="form-label">Email</label>
 
-                  <input
-                    type="email"
-                    className="form-control"
-                    placeholder="Enter Email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                  />
-                </div>
+  <div className="input-group">
+    <input
+      type="email"
+      className="form-control"
+      placeholder="Enter Email"
+      name="email"
+      value={formData.email}
+      onChange={handleChange}
+    />
+
+    <button
+      type="button"
+      className="btn btn-primary"
+      onClick={handleSendOTP}
+      disabled={loading}
+    >
+      {loading ? "Sending..." : "Send OTP"}
+    </button>
+  </div>
+</div>
+{otpSent && (
+  <div className="mb-3">
+    <label className="form-label">OTP</label>
+
+    <div className="input-group">
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Enter OTP"
+        value={otp}
+        onChange={(e) => setOtp(e.target.value)}
+      />
+
+      <button
+        type="button"
+        className="btn btn-success"
+        onClick={handleVerifyOTP}
+      >
+        Verify OTP
+      </button>
+    </div>
+  </div>
+)}
 
                 <div className="mb-3">
                   <label className="form-label">Phone</label>
@@ -147,11 +247,12 @@ function Register() {
                 </div>
 
                 <button
-                  type="submit"
-                  className="btn btn-success w-100"
-                >
-                  Register
-                </button>
+  type="submit"
+  className="btn btn-success w-100"
+  disabled={!otpVerified}
+>
+  {otpVerified ? "Create Account" : "Verify OTP First"}
+</button>
 
               </form>
 

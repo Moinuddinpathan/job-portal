@@ -1,10 +1,13 @@
-const express = require("express");
 const dotenv = require("dotenv");
+dotenv.config();
+
+const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const jobRoutes = require("./routes/jobRoutes")
 
 const connectDB = require("./config/db");
+
+const jobRoutes = require("./routes/jobRoutes");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
