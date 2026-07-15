@@ -6,7 +6,10 @@ const {
   registerUser,
   loginUser,
   sendOtp,
-  verifyOtp,  
+  verifyOtp,
+  logoutUser,
+  refreshAccessToken,
+  getProfile,  
 } = require("../controllers/authController");
 
 const authMiddleware = require("../middleware/authMiddleware");
@@ -17,12 +20,9 @@ router.post("/send-otp", sendOtp);
 router.post("/verify-otp", verifyOtp)
 router.post("/register", registerUser);
 router.post("/login", loginUser);
+router.post("/logout", logoutUser);
+router.post("/refresh-token", refreshAccessToken);
 
-router.get("/profile", authMiddleware, (req, res) => {
-  res.json({
-    success: true,
-    user: req.user,
-  });
-});
+router.get("/profile", authMiddleware, getProfile);
 
 module.exports = router;

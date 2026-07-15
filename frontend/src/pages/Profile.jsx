@@ -18,10 +18,17 @@ useEffect(()=>{
   fetchProfile();
 }, [])
 
-const handleLogout = ()=>{
-  logoutUser();
-  alert("logged Out successfully");
-  navigate("/login");
+const handleLogout = async ()=>{
+   try {
+
+    await logoutUser();
+    localStorage.removeItem("token");
+    alert("Logged Out Successfully");
+    navigate("/login");
+
+  } catch (error) {
+    console.log(error);
+  }
 }
 const fetchProfile = async () => {
   try{

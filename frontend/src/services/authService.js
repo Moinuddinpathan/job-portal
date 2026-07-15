@@ -1,4 +1,4 @@
-import api from "./api";
+import api from "../api/axios";
 
 export const sendOTP = async (email) => {
   return await api.post("/auth/send-otp", { email });
@@ -24,16 +24,10 @@ export const loginUser = (userData) => {
 
 
 
-export const getProfile = ()=>{
-  const token = localStorage.getItem("token");
-
-  return api.get("/auth/profile", {
-    headers:{
-      Authorization:`Bearer ${token}`
-    }
-  })
-}
+export const getProfile = () => {
+  return api.get("/auth/profile");
+};
 
 export const logoutUser = ()=>{
-  localStorage.removeItem("token")
+  return api.post("/auth/logout");
 }

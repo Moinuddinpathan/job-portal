@@ -113,6 +113,11 @@ const [loading, setLoading] = useState(false);
   password: formData.password,
 });
 
+localStorage.setItem(
+  "token",
+  res.data.accessToken
+);
+
       alert(res.data.message);
 
       setFormData({

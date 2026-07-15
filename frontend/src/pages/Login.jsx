@@ -23,7 +23,10 @@ function Login() {
     try {
     const response = await loginUser(formData);
 
-    localStorage.setItem("token", response.data.token);
+    localStorage.setItem(
+  "token",
+  response.data.accessToken
+);
 
     alert("Login Successful");
 

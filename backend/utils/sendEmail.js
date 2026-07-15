@@ -9,6 +9,9 @@ const transporter = nodemailer.createTransport({
     },
 });
 
+// EMAIL_USER=moinuddinpathan996@gmail.com
+// EMAIL_PASS=
+// jdom hxya cwud nfos
 const sendOtpEmail = async (email, otp)=>{
     const mailOptions = {
         from: `"Job Portal" <${process.env.EMAIL_USER}>`,

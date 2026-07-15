@@ -4,6 +4,7 @@ const OTP = require("../models/OTP")
 const {
   generateAccessToken,
   generateRefreshToken,
+    verifyAccessToken,
   verifyRefreshToken,
 } = require("../utils/generateToken");
 const sendOtpEmail = require("../utils/sendEmail");
@@ -55,17 +56,39 @@ if (!otpData) {
       phone,
     });
 
-    // Delete OTP after successful registration
+    // Generate Tokens
+const accessToken = generateAccessToken(user._id, user.role);
+const refreshToken = generateRefreshToken(user._id, user.role);
+
+// Save Refresh Token in Database
+user.refreshToken = refreshToken;
+await user.save();
+
+res.cookie("refreshToken", refreshToken, {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "strict",
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+});
+
+// Delete OTP after successful registration
 await OTP.deleteMany({ email });
 
+res.status(201).json({
+  success: true,
+  message: "Registration Successful",
 
-    res.status(201).json({
-      success: true,
-      message: "Registration Successful",
-      token: generateToken(user._id, user.role),
-      user,
-    });
+  accessToken,
 
+
+  user: {
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    phone: user.phone,
+    role: user.role,
+  },
+}); 
   } catch (error) {
     console.log(error);
 
@@ -106,16 +129,143 @@ const loginUser = async (req, res) => {
       });
     }
 
-    res.status(200).json({
-      success: true,
-      message: "Login Successful",
-      token: generateToken(user._id, user.role),
-      user,
-    });
+    // Generate Tokens
+const accessToken = generateAccessToken(user._id, user.role);
+const refreshToken = generateRefreshToken(user._id, user.role);
+
+// Save Refresh Token
+user.refreshToken = refreshToken;
+await user.save();
+
+res.cookie("refreshToken", refreshToken, {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "strict",
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+});
+
+
+res.status(200).json({
+  success: true,
+  message: "Login Successful",
+  accessToken,
+
+  user: {
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    phone: user.phone,
+    role: user.role,
+  },
+});
 
   } catch (error) {
     console.log(error);
 
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+const getProfile = async (req, res) => {
+  res.status(200).json({
+    success: true,
+    user: req.user,
+  });
+};
+
+
+const logoutUser = async (req, res) => {
+  try {
+    const refreshToken = req.cookies.refreshToken;
+
+    if (!refreshToken) {
+      return res.status(400).json({
+        success: false,
+        message: "Refresh Token is required",
+      });
+    }
+
+    const user = await User.findOne({ refreshToken });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    user.refreshToken = "";
+    await user.save();
+
+    res.clearCookie("refreshToken");
+
+    res.status(200).json({
+      success: true,
+      message: "Logout Successful",
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+const refreshAccessToken = async (req, res) => {
+  try {
+    const refreshToken = req.cookies.refreshToken;
+
+    if (!refreshToken) {
+      return res.status(401).json({
+        success: false,
+        message: "Refresh Token Missing",
+      });
+    }
+
+    const decoded = verifyRefreshToken(refreshToken);
+
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    if (user.refreshToken !== refreshToken) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid Refresh Token",
+      });
+    }
+
+    const newAccessToken = generateAccessToken(user._id, user.role);
+const newRefreshToken = generateRefreshToken(user._id, user.role);
+
+// Update refresh token in database
+user.refreshToken = newRefreshToken;
+await user.save();
+
+res.cookie("refreshToken", newRefreshToken, {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "strict",
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+});
+
+res.status(200).json({
+    success: true,
+    message: "Token Refreshed Successfully",
+    accessToken: newAccessToken,
+});
+
+  } catch (error) {
     res.status(500).json({
       success: false,
       message: error.message,
@@ -228,7 +378,7 @@ module.exports = {
   verifyOtp,
   registerUser,
   loginUser,
-
-  
-  
+  logoutUser,
+  refreshAccessToken,  
+  getProfile,
 };
