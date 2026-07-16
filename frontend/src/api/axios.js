@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const API = axios.create({
+const api = axios.create({
     baseURL: "http://localhost:5000/api",
     withCredentials: true,
 });
 
 
-API.interceptors.request.use((config)=>{
+api.interceptors.request.use((config)=>{
     const token = localStorage.getItem("token");
 
     if(token){
@@ -16,7 +16,7 @@ API.interceptors.request.use((config)=>{
     return config;
 });
 
-API.interceptors.response.use((response) => response, async (error) => {
+api.interceptors.response.use((response) => response, async (error) => {
 
   console.log("401 intercepted");
 
@@ -35,7 +35,7 @@ console.log("Calling Refresh API...");
        
 
 console.log("Calling refresh API...");
-const res = await API.post("/auth/refresh-token");
+const res = await api.post("/auth/refresh-token");
 console.log("Refresh Success");
 console.log(res.data);
         const newAccessToken = res.data.accessToken;
@@ -48,7 +48,7 @@ console.log(res.data);
           console.log("Retrying Original Request");
 
 
-        return API(originalRequest);
+        return api(originalRequest);
 
       } catch (err) {
 
@@ -65,4 +65,4 @@ console.log(res.data);
       return Promise.reject(error);
 })
 
-export default API
+export default api

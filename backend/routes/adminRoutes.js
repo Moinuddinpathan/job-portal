@@ -54,9 +54,11 @@ router.put(
   updateApplicationStatus
 );
 
+
+
 // Delete Job
 router.delete(
-  "/job/:id",
+  "/jobs/:id",
   authMiddleware,
   adminMiddleware,
   deleteJob
