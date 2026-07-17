@@ -3,6 +3,7 @@ import {
   getApplications,
   updateApplicationStatus,
 } from "../services/adminService";
+import AdminNavbar from "../components/AdminNavbar";
 
 function Applications() {
 
@@ -43,6 +44,8 @@ function Applications() {
   }
 
    return (
+    <>
+    <AdminNavbar />
     <div className="container mt-4">
         <h2 className="mb-4">
         Manage Applications
@@ -90,6 +93,7 @@ function Applications() {
             </tbody>
       </table>
     </div>
+    </>
 )
 }
 

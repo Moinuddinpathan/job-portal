@@ -3,10 +3,13 @@ import {
   getUsers,
   deleteUser,
 } from "../services/adminService";
+import AdminNavbar from "../components/AdminNavbar";
+
+
 
 function ManageUsers(){
     const [users, setUsers] = useState([]);
-
+    const [search, setSearch] = useState("");
 
 
     const fetchUsers = async () => {
@@ -28,9 +31,14 @@ function ManageUsers(){
   }, []);
 
     const handleDelete = async (id) => {
-        if(!window.confirm("Delete this user")){
-            return;
-        }
+        const confirmDelete = window.confirm(
+        "Are you sure you want to delete this user?"
+    );
+
+    if (!confirmDelete) {
+        return;
+    }
+
     try {
         await deleteUser(id);
 
@@ -46,12 +54,24 @@ function ManageUsers(){
 
     };
 
+    const filteredUsers = users.filter((user) =>
+  user.name.toLowerCase().includes(search.toLowerCase())
+);
+
     return(
+        <>
+        <AdminNavbar />
          <div className="container mt-4">
 
-            <h2>
-                Manage Users
-            </h2>
+            <h2 className="mb-3">Manage Users</h2>
+
+<input
+  type="text"
+  className="form-control mb-3"
+  placeholder="Search by user name..."
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+/>
             <table className="table table-bordered">
                  <thead>
 
@@ -67,7 +87,7 @@ function ManageUsers(){
 
         <tbody>
             {
-                users.map((user) => (
+                filteredUsers.map((user) => (
                     <tr key={user._id}>
                         <td>{user.name}</td>
                         <td>{user.email}</td>
@@ -91,6 +111,7 @@ function ManageUsers(){
             </table>
 
 </div>
+</>
     )
 }
 

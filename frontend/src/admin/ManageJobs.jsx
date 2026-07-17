@@ -1,9 +1,10 @@
     import { useEffect, useState } from "react";
     import { getJobs, deleteJob } from "../services/adminService";
-
+import AdminNavbar from "../components/AdminNavbar";
 
     function ManageJobs() {
-        const [jobs, setJobs] = useState([])
+        const [jobs, setJobs] = useState([]);
+        const [search, setSearch] = useState("");
 
         useEffect(() => {
             fetchJobs()
@@ -25,14 +26,18 @@
 
         const handleDelete = async (id) => {
 
-        if (!window.confirm("Delete this job?")) {
+        const confirmDelete = window.confirm(
+        "Are you sure you want to delete this job?"
+    );
+
+    if (!confirmDelete) {
         return;
-        }
+    }
 
         try {
 
-        await deleteJob(id);
 
+await deleteJob(id);
         alert("Job Deleted Successfully");
 
         fetchJobs();
@@ -47,12 +52,25 @@
 
     };
 
+    const filteredJobs = jobs.filter((job) =>
+  job.title.toLowerCase().includes(search.toLowerCase())
+);
+
+
     return(
+        <>
+        <AdminNavbar />
         <div className="container mt-4">
 
-            <h2 className="mb-4">
-            Manage Jobs
-        </h2>
+            <h2 className="mb-3">Manage Jobs</h2>
+
+<input
+  type="text"
+  className="form-control mb-3"
+  placeholder="Search by job title..."
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+/>
 
         <table className="table table-bordered">
             <thead>
@@ -71,7 +89,7 @@
 
             <tbody>
                 {
-                    jobs.map((job) => (
+                    filteredJobs.map((job) => (
                         <tr key={job._id}>
                             <td>{job.title}</td>
 
@@ -97,6 +115,7 @@
             </tbody>
         </table>
         </div>
+        </>
 
     )
     }
