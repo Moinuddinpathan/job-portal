@@ -1,0 +1,37 @@
+import api from "../api/axios";
+
+// Dashboard
+export const getDashboard = () => {
+    return api.get("/admin/dashboard")
+}
+
+// Get All Users
+export const getUsers = () => {
+  return api.get("/admin/users");
+};
+
+// Get All Jobs
+export const getJobs = () => {
+  return api.get("/admin/jobs");
+};
+
+// Get All Applications
+export const getApplications = () => {
+  return api.get("/admin/applications");
+};
+// Delete User
+export const deleteUser = (id) => {
+  return api.delete(`/admin/users/${id}`);
+};
+
+// Delete Job
+export const deleteJob = (id) => {
+    return api.delete(`/admin/jobs/${id}`)
+}
+
+// Update Application
+export const updateApplicationStatus = (id, status) => {
+    return api.put(`/admin/application/${id}`, {
+        status,
+    });
+} 

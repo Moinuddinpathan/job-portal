@@ -2,6 +2,7 @@ const User = require("../models/User");
 const Job = require("../models/Job");
 const Application = require("../models/Application");
 
+
 // ===============================
 // Dashboard Statistics
 // ===============================
@@ -12,13 +13,14 @@ const getDashboard = async (req, res) => {
     const jobs = await Job.countDocuments();
     const applications = await Application.countDocuments();
 
-    res.json({
-      success: true,
-      users,
-      jobs,
-      applications,
-    });
-
+   res.json({
+  success: true,
+  dashboard: {
+    totalUsers: users,
+    totalJobs: jobs,
+    totalApplications: applications,
+  },
+});
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -171,8 +173,39 @@ const deleteJob = async (req, res) => {
     });
 
   }
-
 };
+
+
+  // Delete User
+const deleteUser = async (req, res) => {
+  try {
+
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    await user.deleteOne();
+
+    res.json({
+      success: true,
+      message: "User deleted successfully",
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+};
+
 
 module.exports = {
   getDashboard,
@@ -181,4 +214,5 @@ module.exports = {
   getApplications,
   updateApplicationStatus,
   deleteJob,
+  deleteUser,
 };

@@ -12,6 +12,11 @@ import Profile from "./pages/Profile";
 import Dashboard from "./admin/Dashboard";
 import MyApplications from "./pages/MyApplications";
 import ApplyJob from "./pages/ApplyJob";
+import ManageUsers from "./admin/ManageUsers";
+import ManageJobs from "./admin/ManageJobs";
+import Applications from "./admin/Applications";
+
+
 
 function App() {
   return (
@@ -29,6 +34,10 @@ function App() {
         <Route path="/admin" element={<Dashboard />}/>
         <Route path="/my-applications" element={<MyApplications />}/>
         <Route path="/apply/:id" element={<ApplyJob />}/>
+        <Route path="/admin/dashboard" element={<Dashboard />}/>
+        <Route path="/admin/users" element={<ManageUsers />}/>
+        <Route path="/admin/jobs" element={<ManageJobs />}/>
+        <Route path="/admin/applications" element={<Applications />}/>
       </Routes>
     </>
   );

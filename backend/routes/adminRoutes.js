@@ -6,7 +6,9 @@ const {
   getJobs,
   getApplications,
   updateApplicationStatus,
+  deleteUser,
   deleteJob,
+  
 } = require("../controllers/adminController");
 
 const authMiddleware = require("../middleware/authMiddleware");
@@ -62,6 +64,13 @@ router.delete(
   authMiddleware,
   adminMiddleware,
   deleteJob
+);
+
+router.delete(
+  "/users/:id",
+  authMiddleware,
+  adminMiddleware,
+  deleteUser
 );
 
 module.exports = router;
