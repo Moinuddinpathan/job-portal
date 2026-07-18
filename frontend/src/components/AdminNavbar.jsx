@@ -1,6 +1,29 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate  } from "react-router-dom";
 
 function AdminNavbar() {
+
+    const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+
+      await logoutUser();
+
+      localStorage.removeItem("token");
+
+      alert("Logged out successfully.");
+
+      navigate("/login");
+
+    } catch (error) {
+
+      console.log(error);
+
+      alert("Logout failed.");
+
+    }
+  };  
+
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -30,6 +53,13 @@ function AdminNavbar() {
           </Link>
 
         </div>
+                <button
+          className="btn btn-danger"
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
+
 
       </div>
     </nav>

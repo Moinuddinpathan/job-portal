@@ -72,7 +72,9 @@ function ManageUsers(){
   value={search}
   onChange={(e) => setSearch(e.target.value)}
 />
-            <table className="table table-bordered">
+            <div className="table-responsive">
+
+<table className="table table-bordered table-hover align-middle">
                  <thead>
 
           <tr>
@@ -108,7 +110,9 @@ function ManageUsers(){
                 ) )
             }
         </tbody>
-            </table>
+          </table>
+
+</div>
 
 </div>
 </>

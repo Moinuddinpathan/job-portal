@@ -28,6 +28,11 @@ function Login() {
   response.data.accessToken
 );
 
+localStorage.setItem(
+  "user",
+  JSON.stringify(response.data.user)
+);
+
     alert("Login Successful");
 
     navigate("/");

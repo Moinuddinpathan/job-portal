@@ -15,6 +15,7 @@ import ApplyJob from "./pages/ApplyJob";
 import ManageUsers from "./admin/ManageUsers";
 import ManageJobs from "./admin/ManageJobs";
 import Applications from "./admin/Applications";
+import AdminRoute from "./components/AdminRoute";
 // import AdminNavbar from "../components/AdminNavbar";
 
 
@@ -35,10 +36,18 @@ function App() {
         <Route path="/admin" element={<Dashboard />}/>
         <Route path="/my-applications" element={<MyApplications />}/>
         <Route path="/apply/:id" element={<ApplyJob />}/>
-        <Route path="/admin/dashboard" element={<Dashboard />}/>
-        <Route path="/admin/users" element={<ManageUsers />}/>
-        <Route path="/admin/jobs" element={<ManageJobs />}/>
-        <Route path="/admin/applications" element={<Applications />}/>
+        <Route path="/admin/dashboard" element={<AdminRoute>
+          <Dashboard />
+        </AdminRoute>}/>
+        <Route path="/admin/users" element={<AdminRoute>
+          <ManageUsers />
+        </AdminRoute>}/>
+        <Route path="/admin/jobs" element={<AdminRoute>
+          <ManageJobs />
+        </AdminRoute>}/>
+        <Route path="/admin/applications" element={<AdminRoute>
+          <Applications />
+        </AdminRoute>}/>
       </Routes>
     </>
   );

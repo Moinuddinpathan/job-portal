@@ -72,8 +72,10 @@ await deleteJob(id);
   onChange={(e) => setSearch(e.target.value)}
 />
 
-        <table className="table table-bordered">
-            <thead>
+        <div className="table-responsive">
+
+<table className="table table-bordered table-hover align-middle">
+            <thead className="table-dark">
 
             <tr>
 
@@ -85,7 +87,7 @@ await deleteJob(id);
 
             </tr>
 
-            </thead>
+            </thead> 
 
             <tbody>
                 {
@@ -113,7 +115,9 @@ await deleteJob(id);
                     ))
                 }
             </tbody>
-        </table>
+       </table>
+
+</div>
         </div>
         </>
 

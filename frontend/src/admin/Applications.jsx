@@ -51,7 +51,10 @@ function Applications() {
         Manage Applications
       </h2>
 
-      <table className="table table-bordered">
+      <div className="table-responsive">
+
+<table className="table table-bordered table-hover align-middle">
+
          <thead>
 
           <tr>
@@ -73,7 +76,29 @@ function Applications() {
 
               <td>{app.job?.title}</td>
 
-              <td>{app.status}</td>
+              <td>
+
+<span
+className={`badge
+${
+app.status === "Pending"
+? "bg-warning text-dark"
+
+: app.status === "Reviewed"
+? "bg-info"
+
+: app.status === "Selected"
+? "bg-success"
+
+: "bg-danger"
+}`}
+>
+
+{app.status}
+
+</span>
+
+</td>
 
               <td>
                 <select className="form-select"
@@ -92,6 +117,8 @@ function Applications() {
                 }
             </tbody>
       </table>
+
+</div>
     </div>
     </>
 )
