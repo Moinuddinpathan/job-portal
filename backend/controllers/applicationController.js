@@ -1,4 +1,6 @@
 const Application = require("../models/Application");
+const Job = require("../models/Job");
+const sendApplicationReceivedEmail = require("../utils/sendApplicationReceivedEmail")
 
 const applyJob = async (req, res) => {
     try {
@@ -21,6 +23,14 @@ const applyJob = async (req, res) => {
             job,
             resume: req.body.resume,
         });
+
+        const jobData = await Job.findById(job);
+
+        await sendApplicationReceivedEmail(
+    req.user.email,
+    req.user.name,
+    job.title
+);
 
         res.status(201).json({
             success: true,

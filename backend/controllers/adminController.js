@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const Job = require("../models/Job");
 const Application = require("../models/Application");
+const sendStatusEmail = require("../utils/sendEmailStatus");
 
 
 // ===============================
@@ -109,7 +110,10 @@ const updateApplicationStatus = async (req, res) => {
 
     const { status } = req.body;
 
-    const application = await Application.findById(req.params.id);
+    const application = await Application.findById(req.params.id)
+    .populate("user")
+    .populate("job");
+
 
     if (!application) {
 
@@ -124,14 +128,22 @@ const updateApplicationStatus = async (req, res) => {
 
     await application.save();
 
+    await sendStatusEmail(
+      application.user.email,
+      application.user.name,
+      application.job.title,
+      status
+    )
+
     res.json({
       success: true,
       message: "Application status updated successfully",
-      application,
     });
 
   } catch (error) {
 
+    console.log(error);
+  
     res.status(500).json({
       success: false,
       message: error.message,

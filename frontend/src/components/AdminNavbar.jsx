@@ -1,4 +1,6 @@
 import { Link, useNavigate  } from "react-router-dom";
+import { logoutUser } from "../services/authService";
+
 
 function AdminNavbar() {
 
@@ -17,9 +19,14 @@ function AdminNavbar() {
 
     } catch (error) {
 
-      console.log(error);
+       console.log(error);
 
-      alert("Logout failed.");
+  console.log(error.response);
+
+  console.log(error.response?.data);
+
+  alert(error.response?.data?.message || "Logout failed.");
+
 
     }
   };  

@@ -70,3 +70,4 @@ const sendOtpEmail = async (email, otp)=>{
 }
 
 module.exports = sendOtpEmail;
+module.exports = transporter;
