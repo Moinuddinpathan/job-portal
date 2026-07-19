@@ -26,10 +26,22 @@ const applyJob = async (req, res) => {
 
         const jobData = await Job.findById(job);
 
-        await sendApplicationReceivedEmail(
-    req.user.email,
-    req.user.name,
-    job.title
+        console.log("Job Data:", jobData);
+console.log("Job Title:", jobData?.title);
+
+
+
+if (!jobData) {
+  return res.status(404).json({
+    success: false,
+    message: "Job not found",
+  });
+}
+
+await sendApplicationReceivedEmail(
+  req.user.email,
+  req.user.name,
+  jobData.title
 );
 
         res.status(201).json({

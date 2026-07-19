@@ -49,6 +49,7 @@ Application Status Update
 
 <td style="padding:40px;">
 
+
 <h2 style="color:#0dcaf0;">
 Application Reviewed 🔍
 </h2>

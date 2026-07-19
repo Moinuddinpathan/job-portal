@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import { getProfile, logoutUser } from "../services/authService"
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 
 function Profile() {
 
 
   const navigate = useNavigate();
+  const { logout } = useAuth();
+  
 const [resume, setResume] = useState();
 const [user, setUser] = useState({
   name:"",
@@ -22,12 +25,13 @@ const handleLogout = async ()=>{
    try {
 
     await logoutUser();
-    localStorage.removeItem("token");
+    logout();    
     alert("Logged Out Successfully");
     navigate("/login");
 
   } catch (error) {
-    console.log(error);
+    console.log(error.response);
+  console.log(error.response?.data);
   }
 }
 const fetchProfile = async () => {

@@ -1,18 +1,21 @@
 import { Link, useNavigate  } from "react-router-dom";
 import { logoutUser } from "../services/authService";
+import { useAuth } from "../context/AuthContext";
 
 
 function AdminNavbar() {
 
     const navigate = useNavigate();
 
+    const { logout } = useAuth();
+
   const handleLogout = async () => {
     try {
 
       await logoutUser();
 
-      localStorage.removeItem("token");
-
+      logout();
+      
       alert("Logged out successfully.");
 
       navigate("/login");

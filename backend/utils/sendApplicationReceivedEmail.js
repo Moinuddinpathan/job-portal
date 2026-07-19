@@ -6,6 +6,13 @@ const sendApplicationReceivedEmail = async (
   jobTitle,
 ) => {
 
+  console.log("Email Function Values:");
+console.log({
+  email,
+  name,
+  jobTitle,
+});
+
   await transporter.sendMail({
 
     from: `"Job Portal" <${process.env.EMAIL_USER}>`,
