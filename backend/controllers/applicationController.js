@@ -4,7 +4,14 @@ const sendApplicationReceivedEmail = require("../utils/sendApplicationReceivedEm
 
 const applyJob = async (req, res) => {
     try {
-        const { job } = req.body;
+        const { job,
+  skills,
+  experience,
+  location,
+  expectedSalary,
+  linkedIn,
+  github,
+  coverLetter, } = req.body;
 
         const alreadyApplied = await Application.findOne({
       user: req.user._id,
@@ -21,7 +28,20 @@ const applyJob = async (req, res) => {
         const application = await Application.create({
             user: req.user._id,
             job,
-            resume: req.body.resume,
+            resume: req.file ? req.file.path : "",
+            skills,
+
+  experience,
+
+  location,
+
+  expectedSalary,
+
+  linkedIn,
+
+  github,
+
+  coverLetter,
         });
 
         const jobData = await Job.findById(job);

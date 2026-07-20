@@ -19,6 +19,41 @@ const applicationSchema = new mongoose.Schema(
       required: true,
     },
 
+    skills: {
+      type: String,
+      required: true,
+    },
+
+    experience: {
+      type: String,
+      required: true,
+    },
+
+    location: {
+      type: String,
+      required: true,
+    },
+
+    expectedSalary: {
+      type: String,
+      required: true,
+    },
+
+    linkedIn: {
+      type: String,
+      default: "",
+    },
+
+    github: {
+      type: String,
+      default: "",
+    },
+
+    coverLetter: {
+      type: String,
+      default: "",
+    },
+    
     status: {
       type: String,
       enum: ["Pending", "Reviewed", "Selected", "Rejected"],
