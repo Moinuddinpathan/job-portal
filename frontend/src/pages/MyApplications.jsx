@@ -43,13 +43,12 @@ function MyApplications() {
 
         <thead className="table-dark">
 
-          <tr>
-            <th>Job Title</th>
-            <th>Company</th>
-            <th>Status</th>
-            <th>Resume</th>
-          </tr>
-
+         <tr>
+    <th>Job Title</th>
+    <th>Company</th>
+    <th>Status</th>
+    <th>Applied On</th>
+</tr>
         </thead>
 
         <tbody>
@@ -64,15 +63,19 @@ function MyApplications() {
                 <td>{app.job?.company}</td>
 
                 <td>
-                    <span className={
-                        app.status === "Pending"
-                        ? "badge bg-warning text-dark"
-                        : app.status === "Selected"
-                        ? "badge bg-success"
-                        : "badge bg-danger"
-                    }>
-                        {app.status}
-                    </span>
+                    <span
+  className={`badge ${
+    app.status === "Pending"
+      ? "bg-warning text-dark"
+      : app.status === "Reviewed"
+      ? "bg-info"
+      : app.status === "Selected"
+      ? "bg-success"
+      : "bg-danger"
+  }`}
+>
+  {app.status}
+</span>
                 </td>
                 <td>{app.resume}</td>
 
@@ -80,7 +83,7 @@ function MyApplications() {
                     ))
                 ) : (
                     <tr>
-                        <td colSpan="3"  className="text-center">
+                        <td colSpan="4"  className="text-center">
                             No Application Found
                         </td>
                     </tr>
