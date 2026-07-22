@@ -68,26 +68,28 @@ console.log("Navbar:", isLoggedIn);
                   <label>Email</label>
 
                   <input
-                    type="email"
-                    className="form-control"
-                    placeholder="Enter Email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                  />
+  type="email"
+  className="form-control"
+  placeholder="Enter Email"
+  name="email"
+  autoComplete="email"
+  value={formData.email}
+  onChange={handleChange}
+/>
                 </div>
 
                 <div className="mb-3">
                   <label>Password</label>
 
-                  <input
-                    type="password"
-                    className="form-control"
-                    placeholder="Enter Password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                  />
+                 <input
+  type="password"
+  className="form-control"
+  placeholder="Enter Password"
+  name="password"
+  autoComplete="current-password"
+  value={formData.password}
+  onChange={handleChange}
+/>
                 </div>
 
                 <button className="btn btn-primary w-100">

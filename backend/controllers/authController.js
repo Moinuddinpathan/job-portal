@@ -7,7 +7,7 @@ const {
     verifyAccessToken,
   verifyRefreshToken,
 } = require("../utils/generateToken");
-const sendOtpEmail = require("../utils/sendEmail");
+const { sendOtpEmail, transporter } = require("../utils/sendEmail");
 
 // Register User
 const registerUser = async (req, res) => {
@@ -28,7 +28,7 @@ if (!otpData) {
 }
 
     // Check required fields
-    if (!name || !email || !password || !phone) {
+    if (!name || !email || !password) {
       return res.status(400).json({
         success: false,
         message: "All fields are required",
@@ -85,7 +85,6 @@ res.status(201).json({
     _id: user._id,
     name: user.name,
     email: user.email,
-    phone: user.phone,
     role: user.role,
   },
 }); 
@@ -158,7 +157,7 @@ res.status(200).json({
     _id: user._id,
     name: user.name,
     email: user.email,
-    phone: user.phone,
+
     role: user.role,
   },
 });

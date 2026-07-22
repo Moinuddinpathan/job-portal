@@ -69,5 +69,7 @@ const sendOtpEmail = async (email, otp)=>{
     await transporter.sendMail(mailOptions);
 }
 
-module.exports = sendOtpEmail;
-module.exports = transporter;
+module.exports = {
+  sendOtpEmail,
+  transporter,
+};

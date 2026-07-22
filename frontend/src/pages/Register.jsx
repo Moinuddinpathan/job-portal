@@ -1,5 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
+import "./Register.css";
+import registerBanner from "../assets/register-banner.jpg";
+import logo from "../assets/logo.png";
 
 import {
   sendOTP,
@@ -68,7 +73,6 @@ const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "",
     password: "",
     confirmPassword: "",
   });
@@ -92,7 +96,7 @@ const [loading, setLoading] = useState(false);
     if (
       !formData.name ||
       !formData.email ||
-      !formData.phone ||
+
       !formData.password ||
       !formData.confirmPassword
     ) {
@@ -109,7 +113,7 @@ const [loading, setLoading] = useState(false);
       const res = await registerUser({
   name: formData.name,
   email: formData.email,
-  phone: formData.phone,
+
   password: formData.password,
 });
 
@@ -123,7 +127,7 @@ localStorage.setItem(
       setFormData({
         name: "",
         email: "",
-        phone: "",
+   
         password: "",
         confirmPassword: "",
       });
@@ -139,131 +143,196 @@ setOtpVerified(false);
   };
 
   return (
-    <div className="container mt-5">
-      <div className="row justify-content-center">
-        <div className="col-md-6">
-          <div className="card shadow">
+    <div className="register-page">
+      <div className="register-left">
+        <img src={registerBanner}
+        alt="Banner"
+        className="register-banner"
+        />
 
-            <div className="card-header bg-success text-white text-center">
-              <h3>Create Account</h3>
+        <div className="register-overlay">
+
+          <img 
+          src={logo}
+          alt="Logo"
+          className="register-logo"
+          />
+
+           <h1>
+          Build Your Dream Career
+        </h1>
+
+        <p>
+          Discover thousands of opportunities from India's top companies and
+          start your journey today.
+        </p>
+
+
+        </div>
+      </div>
+
+      <div className="register-right">
+
+        <div className="register-card">
+
+           <h1>Create Account</h1>
+
+        <p className="subtitle">
+          Register to apply for your dream jobs.
+        </p>
+
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+
+            <label>Full Name</label>
+
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Enter Full Name"
+              autoComplete="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+            />
+
+          </div>
+
+          <div className="mb-3">
+            <label>Email Address</label>
+
+            <div className="input-group">
+
+               <input
+                type="email"
+                className="form-control"
+                placeholder="Enter Email"
+                autoComplete="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+              />
+
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleSendOTP}
+                disabled={loading}
+              >
+                {loading ? "Sending..." : "Send OTP"}
+              </button>
+
             </div>
+          </div>
 
-            <div className="card-body">
+          {
+            otpSent && (
+              <div className="mb-3">
+                <label>OTP</label>
 
-              <form onSubmit={handleSubmit}>
-
-                <div className="mb-3">
-                  <label className="form-label">Full Name</label>
-
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Enter Full Name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
+                <div className="input-group">
+                  <input 
+                  type="text"
+                  className="form-control"
+                  placeholder="Enter OTP"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
                   />
+
+                  <button 
+                  type="button"
+                  className="btn btn-outline-primary"
+                  onClick={handleVerifyOTP}>
+                    Verify OTP
+                  </button>
                 </div>
+              </div>
+            )
+          }
 
-                <div className="mb-3">
-  <label className="form-label">Email</label>
+          <div className="mb-3">
 
-  <div className="input-group">
-    <input
-      type="email"
-      className="form-control"
-      placeholder="Enter Email"
-      name="email"
-      value={formData.email}
-      onChange={handleChange}
-    />
+  <label>Password</label>
 
-    <button
-      type="button"
-      className="btn btn-primary"
-      onClick={handleSendOTP}
-      disabled={loading}
-    >
-      {loading ? "Sending..." : "Send OTP"}
-    </button>
-  </div>
+  <input
+  type="password"
+  className="form-control"
+  placeholder="Enter Password"
+  name="password"
+  autoComplete="new-password"
+  value={formData.password}
+  onChange={handleChange}
+/>
+
 </div>
-{otpSent && (
-  <div className="mb-3">
-    <label className="form-label">OTP</label>
 
-    <div className="input-group">
-      <input
-        type="text"
-        className="form-control"
-        placeholder="Enter OTP"
-        value={otp}
-        onChange={(e) => setOtp(e.target.value)}
-      />
+<div className="mb-3">
 
-      <button
-        type="button"
-        className="btn btn-success"
-        onClick={handleVerifyOTP}
-      >
-        Verify OTP
-      </button>
-    </div>
-  </div>
-)}
+  <label>Confirm Password</label>
 
-                <div className="mb-3">
-                  <label className="form-label">Phone</label>
+<input
+  type="password"
+  className="form-control"
+  placeholder="Enter Password"
+  name="password"
+  autoComplete="new-password"
+  value={formData.password}
+  onChange={handleChange}
+/>
 
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Enter Phone Number"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                  />
-                </div>
+</div>
 
-                <div className="mb-3">
-                  <label className="form-label">Password</label>
+<div className="form-check mb-3">
 
-                  <input
-                    type="password"
-                    className="form-control"
-                    placeholder="Enter Password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                  />
-                </div>
+  <input
+    className="form-check-input"
+    type="checkbox"
+    id="terms"
+    required
+  />
 
-                <div className="mb-3">
-                  <label className="form-label">Confirm Password</label>
+  <label
+    className="form-check-label"
+    htmlFor="terms"
+  >
+    I agree to the <strong>Terms & Conditions</strong>
+  </label>
 
-                  <input
-                    type="password"
-                    className="form-control"
-                    placeholder="Confirm Password"
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                  />
-                </div>
+</div>
 
-                <button
+<button
   type="submit"
-  className="btn btn-success w-100"
+  className="register-btn"
   disabled={!otpVerified}
 >
   {otpVerified ? "Create Account" : "Verify OTP First"}
 </button>
 
-              </form>
+<div className="divider">
+  <span>OR</span>
+</div>
 
-            </div>
+<button
+  type="button"
+  className="google-btn"
+>
+  <img
+    src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+    alt="Google"
+  />
 
-          </div>
+  Continue with Google
+</button>
+
+<p className="login-text">
+  Already have an account?
+
+  <Link to="/login">
+    Login
+  </Link>
+</p>
+
+        </form>
         </div>
       </div>
     </div>

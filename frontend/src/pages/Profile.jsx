@@ -14,7 +14,7 @@ const [resume, setResume] = useState();
 const [user, setUser] = useState({
   name:"",
   email:"",
-  phone:"",
+
 })
   
 useEffect(()=>{
@@ -90,18 +90,7 @@ const fetchProfile = async () => {
                 />
               </div>
 
- <div className="mb-3">
-                <label className="form-label">
-                  Phone
-                </label>
-
-                <input
-                  type="text"
-                  className="form-control"
-                  value={user.phone}
-                  readOnly
-                />
-              </div>
+ 
 
               <div className="mb-3">
                 <label className="form-label">
