@@ -16,6 +16,7 @@ import ManageUsers from "./admin/ManageUsers";
 import ManageJobs from "./admin/ManageJobs";
 import Applications from "./admin/Applications";
 import AdminRoute from "./components/AdminRoute";
+import GoogleSuccess from "./pages/GoogleSuccess";
 // import AdminNavbar from "../components/AdminNavbar";
 
 
@@ -36,6 +37,9 @@ function App() {
       
         <Route path="/my-applications" element={<MyApplications />}/>
         <Route path="/apply/:id" element={<ApplyJob />}/>
+
+        <Route path="/google-success" element={<GoogleSuccess />} />
+
         <Route path="/admin/dashboard" element={<AdminRoute>
           <Dashboard />
         </AdminRoute>}/>

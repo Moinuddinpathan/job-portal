@@ -142,6 +142,12 @@ setOtpVerified(false);
     }
   };
 
+
+  const handleGoogleLogin = () => {
+  window.location.href = "http://localhost:5000/api/auth/google";
+};
+
+
   return (
     <div className="register-page">
       <div className="register-left">
@@ -273,10 +279,10 @@ setOtpVerified(false);
 <input
   type="password"
   className="form-control"
-  placeholder="Enter Password"
-  name="password"
+  placeholder="Confirm Password"
+  name="confirmPassword"
   autoComplete="new-password"
-  value={formData.password}
+  value={formData.confirmPassword}
   onChange={handleChange}
 />
 
@@ -315,6 +321,7 @@ setOtpVerified(false);
 <button
   type="button"
   className="google-btn"
+  onClick={handleGoogleLogin}
 >
   <img
     src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"

@@ -38,7 +38,7 @@ const fetchProfile = async () => {
   try{
     const response = await getProfile();
 
-    setUser(response.data.user);
+    setUser(response.user);
   } catch (error) {
     console.log(error);
     

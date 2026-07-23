@@ -110,6 +110,7 @@ const loginUser = async (req, res) => {
       });
     }
 
+    
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -118,6 +119,14 @@ const loginUser = async (req, res) => {
         message: "Invalid Email or Password",
       });
     }
+
+    if(user.googleId) {
+      return res.status(400).json({
+        success: false,
+        message: "This account uses Google Sign-In. Please continue with Google.",
+      });
+    }
+
 
     const isMatch = await bcrypt.compare(password, user.password);
 

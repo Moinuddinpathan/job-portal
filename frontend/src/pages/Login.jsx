@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/authService";
 import { useAuth } from "../context/AuthContext";
@@ -6,11 +6,17 @@ import { useAuth } from "../context/AuthContext";
 
 function Login() {
   const navigate = useNavigate();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, login } = useAuth();
 
 console.log("Navbar:", isLoggedIn);
 
-  const { login } = useAuth();
+useEffect(() => {
+  if (isLoggedIn) {
+    navigate("/");
+  }
+}, [isLoggedIn, navigate]);
+
+
 
   const [formData, setFormData] = useState({
     email: "",

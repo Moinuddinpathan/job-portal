@@ -24,9 +24,10 @@ export const loginUser = (userData) => {
 
 
 
-export const getProfile = () => {
-  return api.get("/auth/profile");
-};
+export const getProfile = async () => {
+    const response = await api.get("/auth/profile");
+    return response.data;
+  };
 
 export const logoutUser = ()=>{
   return api.post("/auth/logout");
